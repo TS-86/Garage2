@@ -37,12 +37,4 @@
   }
 }
 
-/*
-initially added in the below from youtube video, then experimented with HomePage.js myself and
-realised that I don't need the code below anymore (but it can still be left here, doesn't affect anything) :
-*/
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-}
