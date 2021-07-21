@@ -6,27 +6,34 @@ import axios from "axios";
 
 const provider = getDefaultProvider("rinkeby", { alchemy: config.alchemyKey });
 const contract = new Contract(
-  //"0x0Cc1bb3e59E9c7f76475e6C958892Cd3a3724e98",
-  "0xF39422A2CEeA9f5aa5974e697D7193755B3E4E32",
+  "0x6cf70499DB30a9974198Cd5ddD20b9955a3627be",
   abi,
   provider
 );
+
 
 const formatIpfsUrl = (url) => {
   return url.replace(/ipfs:\/\//g, "https://cloudflare-ipfs.com/");
 };
 
-export const HomePage = () => {
+export const CatPage = () => {
   const [mintedNftState, setMintedNftState] = useState({
     state: "UNINITIALIZED",
   });
   const [purchaseState, setPurchaseState] = useState({
     state: "UNINITIALIZED",
   });
-  const modalVisible =
+  let modalVisible =  // <-- was const, changed to let to try method below, didn't work
     purchaseState.state === "PENDING_METAMASK" ||
     purchaseState.state === "PENDING_SIGNER" ||
     purchaseState.state === "PENDING_CONFIRMAION";
+
+  // this method didn't work, but can leave it here:  
+  function closeModal() {
+    modalVisible = false;
+  }
+  
+  const [numberMinted, setNumberMinted] = useState(0);
 
   const loadRobotsData = async () => {
     setMintedNftState({
@@ -75,8 +82,7 @@ export const HomePage = () => {
 
     // Create the contract instance
     const contract = new Contract(
-      //"0x0Cc1bb3e59E9c7f76475e6C958892Cd3a3724e98",
-      "0xF39422A2CEeA9f5aa5974e697D7193755B3E4E32",
+      "0x6cf70499DB30a9974198Cd5ddD20b9955a3627be",
       abi,
       signer
     );
@@ -87,20 +93,28 @@ export const HomePage = () => {
     setPurchaseState({ state: "PENDING_CONFIRMAION" });
     const transaction = await receipt.wait();
     setPurchaseState({ state: "SUCCESS", transaction });
+    setNumberMinted(numberMinted + 1);
 
     // Reload the Robots
     await loadRobotsData();
   };
 
+  
   return (
-    <div className="min-h-screen bg-gray-800">
+    <div className="min-h-screen bg-blue-400">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-        <div className="text-gray-100 text-6xl pt-28 pb-10">ROBOTS</div>
+      <div className="mx-auto flex items-center justify-center">
+        <div className="text-black text-6xl pt-28 pb-10">Cats</div>
+      </div>
+      <div className="text-black text-2xl pt-0 pb-10">Note: There are only 5 cats for sale, 
+      so get them while stocks last!</div>
+      <div className="text-black text-2xl pt-0 pb-0">Cats minted: {numberMinted}</div>
+      <div className="text-black text-2xl pt-0 pb-10">Cats remaining: {5-numberMinted}</div>
         {mintedNftState.state === "PENDING" && (
           <div className="text-xl text-white">LOADING...</div>
         )}
         {mintedNftState.state === "SUCCESS" && (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             {mintedNftState.data.map(
               ({ id, image, name, description, owner }) => {
                 return (
@@ -119,15 +133,18 @@ export const HomePage = () => {
         )}
         <div className="mt-12">
           <button
+            disabled={numberMinted >= 5}
             onClick={handlePurchase}
             type="button"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
-            Buy My Robot
+            Buy a cat for 1 test ether
           </button>
         </div>
       </div>
-      {modalVisible && (
+
+ 
+      {modalVisible === true ? (
         <div
           className="fixed z-10 inset-0 overflow-y-auto"
           aria-labelledby="modal-title"
@@ -147,6 +164,7 @@ export const HomePage = () => {
             </span>
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
               <div>
+              <div className="mx-auto flex items-center justify-center">
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100">
                   <svg
                     className="h-6 w-6 text-yellow-600"
@@ -163,6 +181,9 @@ export const HomePage = () => {
                       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                     />
                   </svg>
+                </div>
+                <button onClick={closeModal} type="button">X</button>
+                
                 </div>
                 <div className="mt-3 text-center sm:mt-5">
                   <h3
@@ -191,7 +212,9 @@ export const HomePage = () => {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
+
+  

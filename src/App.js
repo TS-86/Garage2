@@ -1,10 +1,12 @@
 import "./App.css";
-import { HomePage } from "./components/HomePage";
+import { MockData } from "./components/MockData";
+import { CatPage } from "./components/CatPage";
 
 function App() {
   return (
     <div className="App font-mono">
-      <HomePage />
+      <MockData />
+      <CatPage />
     </div>
   );
 }
