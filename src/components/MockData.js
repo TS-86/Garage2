@@ -137,8 +137,7 @@ export const MockData = () => {
     const handlePurchase = () => {
         alert("Purchasing...");
     };
-    
-    const [arrayLength, setArrayLength] = useState(MOCK_DATA.length);
+
 
   return (
     <div className="min-h-screen bg-blue-400">
@@ -158,8 +157,8 @@ export const MockData = () => {
       </div>
       <div className="text-black text-2xl pt-0 pb-10">Note: There are only 16 NFTs for sale, 
       so get them while stocks last!</div>
-      <div className="text-black text-2xl pt-0 pb-0">NFTs minted: {arrayLength}</div>
-      <div className="text-black text-2xl pt-0 pb-10">NFTs remaining: {16-arrayLength}</div>
+      <div className="text-black text-2xl pt-0 pb-0">NFTs minted: {MOCK_DATA.length}</div>
+      <div className="text-black text-2xl pt-0 pb-10">NFTs remaining: {16-MOCK_DATA.length}</div>
         <div className="grid grid-cols-2 gap-8">
           {MOCK_DATA.map(({ id, image, name, description, owner }) => {
             return (
@@ -177,7 +176,7 @@ export const MockData = () => {
         <div className="mt-12">
           <button
             id="BuyButton"
-            disabled={arrayLength >= 16}
+            disabled={MOCK_DATA.length >= 16}
             onClick={handlePurchase}
             type="button"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium 
