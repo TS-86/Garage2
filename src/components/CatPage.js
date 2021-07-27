@@ -46,9 +46,11 @@ export const CatPage = () => {
   }
 
 
-  useEffect(async () => {
-    const count = await retrieveCount();
-    setNumberMinted(count);
+  useEffect(() => {
+    (async () => {
+       const count = await retrieveCount();
+       setNumberMinted(count);
+    })();
   }, []);
 
 

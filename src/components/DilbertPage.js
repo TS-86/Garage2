@@ -46,9 +46,11 @@ export const DilbertPage = () => {
   }
 
 
-  useEffect(async () => {
-    const count = await retrieveCount();
-    setNumberMinted(count);
+  useEffect(() => {
+    (async () => {
+       const count = await retrieveCount();
+       setNumberMinted(count);
+    })();
   }, []);
 
 

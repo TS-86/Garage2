@@ -46,9 +46,11 @@ export const RobotPage = () => {
   }
 
 
-  useEffect(async () => {
-    const count = await retrieveCount();
-    setNumberMinted(count);
+  useEffect(() => {
+    (async () => {
+       const count = await retrieveCount();
+       setNumberMinted(count);
+    })();
   }, []);
 
 
