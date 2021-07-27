@@ -6,7 +6,7 @@ import axios from "axios";
 
 const provider = getDefaultProvider("rinkeby", { alchemy: config.alchemyKey });
 const contract = new Contract(
-  "0xCb546A648bcBEF2d047Cc506af434BA182a27250",  //also verified and published
+  "0x805d6445B615546f514F92bF2ab3c23f15b9C1A2",
   abi,
   provider
 );
@@ -16,7 +16,7 @@ const formatIpfsUrl = (url) => {
   return url.replace(/ipfs:\/\//g, "https://cloudflare-ipfs.com/");
 };
 
-export const CatPage = () => {
+export const RobotPage = () => {
   const [mintedNftState, setMintedNftState] = useState({
     state: "UNINITIALIZED",
   });
@@ -59,7 +59,7 @@ export const CatPage = () => {
     const totalSupply = await contract.totalSupply();
     const ids = [...Array(totalSupply.toNumber()).keys()];
     const deferredData = ids.map(async (id) => {
-      const ipfsUri = await contract.tokenURI(id);
+      const ipfsUri = await contract.tokenURI(id%10);
       const owner = await contract.ownerOf(id);
       const formattedUri = formatIpfsUrl(ipfsUri);
       const metadata = (await axios.get(formattedUri)).data;
@@ -99,7 +99,7 @@ export const CatPage = () => {
 
     // Create the contract instance
     const contract = new Contract(
-      "0xCb546A648bcBEF2d047Cc506af434BA182a27250",  //also verified and published
+      "0x805d6445B615546f514F92bF2ab3c23f15b9C1A2",
       abi,
       signer
     );
@@ -121,17 +121,16 @@ export const CatPage = () => {
     <div className="min-h-screen bg-blue-400">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
       <div className="mx-auto flex items-center justify-center">
-        <div className="text-black text-6xl pt-28 pb-10">Cats</div>
+        <div className="text-black text-6xl pt-28 pb-10">Robots Unlimited</div>
       </div>
-      <div className="text-black text-2xl pt-0 pb-10">Note: There are only 5 cats for sale, 
-      so get them while stocks last!</div>
-      <div className="text-black text-2xl pt-0 pb-0">Cats minted: {numberMinted}</div>
-      <div className="text-black text-2xl pt-0 pb-10">Cats remaining: {5-numberMinted}</div>
+      <div className="text-black text-2xl pt-0 pb-10">As long as you've got the ethers, we've got the robots!</div>
+      <div className="text-black text-2xl pt-0 pb-0">Robots minted: {numberMinted}</div>
+      <div className="text-black text-2xl pt-0 pb-10">Robots remaining: INFINITE</div>
         {mintedNftState.state === "PENDING" && (
           <div className="text-xl text-white">LOADING...</div>
         )}
         {mintedNftState.state === "SUCCESS" && (
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-4 gap-2">
             {mintedNftState.data.map(
               ({ id, image, name, description, owner }) => {
                 return (
@@ -150,12 +149,11 @@ export const CatPage = () => {
         )}
         <div className="mt-12">
           <button
-            disabled={numberMinted >= 5}
             onClick={handlePurchase}
             type="button"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           >
-            Buy a cat for 1 test ether
+            Buy a robot for 1 test ether
           </button>
         </div>
       </div>

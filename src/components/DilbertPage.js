@@ -6,8 +6,7 @@ import axios from "axios";
 
 const provider = getDefaultProvider("rinkeby", { alchemy: config.alchemyKey });
 const contract = new Contract(
-  "0xF39422A2CEeA9f5aa5974e697D7193755B3E4E32",  //my 1st robots contract, working, then tested over-minting intentionally and crashed it, so NOT working now
-  //"0x066e4b308B17e4A9719b1b69D50Fd4492e79A829",  //my robots contract deployed to test CONTRACT limitation of 2 NFTs ONLY, working
+  "0x9F8C4d57BD381E80b5E70c7ec3da723F59b48C61",
   abi,
   provider
 );
@@ -24,17 +23,34 @@ export const DilbertPage = () => {
   const [purchaseState, setPurchaseState] = useState({
     state: "UNINITIALIZED",
   });
-  let modalVisible =  // <-- was const, changed to let to try method below, didn't work
+  const modalVisible = 
     purchaseState.state === "PENDING_METAMASK" ||
     purchaseState.state === "PENDING_SIGNER" ||
     purchaseState.state === "PENDING_CONFIRMAION";
 
-  // this method didn't work, but can leave it here:  
+   
   function closeModal() {
-    modalVisible = false;
+    setPurchaseState({
+      state: "UNINITIALIZED",
+    });
   }
   
-  const [numberMinted, setNumberMinted] = useState(0);
+
+  const [numberMinted, setNumberMinted] = useState();
+
+  
+  async function retrieveCount() {
+    const BigNumber = await contract.getCount();
+    const count = Number(BigNumber);
+    return count;
+  }
+
+
+  useEffect(async () => {
+    const count = await retrieveCount();
+    setNumberMinted(count);
+  }, []);
+
 
   const loadRobotsData = async () => {
     setMintedNftState({
@@ -83,8 +99,7 @@ export const DilbertPage = () => {
 
     // Create the contract instance
     const contract = new Contract(
-      "0xF39422A2CEeA9f5aa5974e697D7193755B3E4E32",  //my 1st robots contract, working, then tested over-minting intentionally and crashed it, so NOT working now
-      //"0x066e4b308B17e4A9719b1b69D50Fd4492e79A829",  //my robots contract deployed to test CONTRACT limitation of 2 NFTs ONLY, working
+      "0x9F8C4d57BD381E80b5E70c7ec3da723F59b48C61",
       abi,
       signer
     );
@@ -124,7 +139,7 @@ export const DilbertPage = () => {
           <div className="text-xl text-white">LOADING...</div>
         )}
         {mintedNftState.state === "SUCCESS" && (
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             {mintedNftState.data.map(
               ({ id, image, name, description, owner }) => {
                 return (
