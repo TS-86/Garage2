@@ -127,9 +127,10 @@ export const DilbertPage = () => {
       <div className="text-black text-8xl pt-28 pb-10">The NFT Marketplace</div>
       <div className="mx-auto flex items-center justify-center">
         <img src="https://cloudflare-ipfs.com/ipfs/QmbXjC7shxdpb25QzymSomqaGK5XPjeBQCphWiGZCmyDhb/dilbert%20images%20to%20use%20at%20top%20of%20page/dilbert-typing-gif.gif" 
-        width="300px" className="mx-auto p-4"/>
+        width="300px" className="mx-auto p-4" alt=""/>
         <div className="text-black text-6xl pt-28 pb-10">Dilbert's NFT life lessons</div>
-        <img src="https://cloudflare-ipfs.com/ipfs/QmbXjC7shxdpb25QzymSomqaGK5XPjeBQCphWiGZCmyDhb/dilbert%20images%20to%20use%20at%20top%20of%20page/dilbert-giving-lessons.gif" className="mx-auto p-4"/>
+        <img src="https://cloudflare-ipfs.com/ipfs/QmbXjC7shxdpb25QzymSomqaGK5XPjeBQCphWiGZCmyDhb/dilbert%20images%20to%20use%20at%20top%20of%20page/dilbert-giving-lessons.gif" 
+        className="mx-auto p-4" alt=""/>
       </div>
       <div className="text-black text-2xl pt-0 pb-10">Note: There are only 16 NFTs for sale, 
       so get them while stocks last!</div>
